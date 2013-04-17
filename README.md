@@ -319,7 +319,7 @@ The `observable` declaration has some differences with the standard
    
 ### Version ###
 
-Observable 0.5
+Observable 0.6
 
 The current version of this software can be found at https://github.com/vjoel/observable.
 
