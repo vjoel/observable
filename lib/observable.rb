@@ -104,7 +104,7 @@ private
       def when_#{var} pattern=Object, &block
         observer_map = @#{var}__observer_map ||= ObserverMap.new
         if block
-          observer = eval "self", block
+          observer = eval "self", block.binding
           observer_map[[observer, pattern]] = block
 
           value = #{var}
@@ -166,7 +166,7 @@ private
       def when_#{var} pattern=Object, &block
         observer_map = @#{var}__observer_map ||= {}
         if block
-          observer = eval "self", block
+          observer = eval "self", block.binding
           observer_map[[observer, pattern]] = block
         else
           $stderr.puts "Observable: warning: no block given for:\n" +
