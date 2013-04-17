@@ -36,6 +36,7 @@ end
 acme = Stock.new(10)
 watcher = StockWatcher.new(acme)
 
-10.step(30, 5) do |acme.price|
+10.step(30, 5) do |n|
+  acme.price = n
   puts "---"
 end
