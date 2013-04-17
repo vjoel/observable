@@ -1,0 +1,48 @@
+observable 0.5
+
+- Fixed a harmless warning about an uninitialized __observer_map variable
+  when assigning to an observable var before setting up any when clauses.
+  Thanks to Hadmut Danisch.
+  
+- If an observer proc takes 3 args, then the third arg is assigned the object
+  being observed. If it takes 4 args, then the fourth is assigned the name of
+  the attribute. This is useful if there are a lot of objects or attrs. See the
+  examples/mem-usage-*.rb for examples and discussion. Thanks again to
+  Hadmut.
+
+observable 0.4
+
+- Marshal and YAML compatibility: Objects with registered observers can
+  be dumped, but the dumped versions lose their observers, of course.
+
+- API change: Renamed stop_observing to remove_observer.
+
+- API change: signals are now fired by methods of the form #name rather
+  than #name=. There is no longer a reader method associated with
+  the signal (the method that used to be called #name). Signals are
+  intentionally valueless except at the instant of firing, and at that
+  time the value is available as the argument to when_ clauses.
+
+- Added tests.
+
+observable 0.3
+
+- Now supports distributed observers with DRb. See the chat-server.rb
+  and chat-client.rb examples in the FoxTails package.
+
+- handle_observer_exception: a mechanism for handling exceptions in
+  observer call-backs.
+
+- Having an observable attrs also gives you "stop_observing_#{var}".
+
+- Signal handlers now complain about reentrant calls.
+
+- Added tests.
+
+observable 0.2
+
+- Added signals. See the docs and examples.
+
+observable 0.1
+
+- First public release.
