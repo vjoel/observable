@@ -1,3 +1,9 @@
+observable 0.6
+
+- Fixed some ruby 2.0 issues.
+
+- Updated doc for github markdown.
+
 observable 0.5
 
 - Fixed a harmless warning about an uninitialized __observer_map variable
