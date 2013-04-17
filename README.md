@@ -120,13 +120,19 @@ does not cause notification.
 ```ruby
     MyClass#when_var pattern=Object do |value| ... end
     MyClass#when_var pattern=Object do |value, old_value| ... end
+    MyClass#when_var pattern=Object do |value, old_value, obj| ... end
+    MyClass#when_var pattern=Object do |value, old_value, obj, attr| ... end
 ```
    
 The registration method takes a pattern (any object) and a block. When the
 variable's value changes as a result of calling the writer, the pattern is
 matched against the new value using `case` semantics (i.e., `===`.
 If the match succeeds, the block is called with the new value as an
-argument. If the block has a second argument, it is assigned the old value.
+argument. If the block has a second argument, it is assigned the old value. 
+The third argument is assigned the object being observed. This can be
+useful to reduce the number of procs required to observe a large number
+of objects. (See examples/mem-usage-*.rb.) The fourth argument is assigned
+the name of the attr.
 
 The match is also checked at the time of registration (that is, when
 `when_var` is called). In this case, `old_value` is `nil`.
@@ -136,8 +142,25 @@ with the same pattern and a different block. (The two blocks, the original
 and the replacement, must have the same `self`, or else both blocks
 apply.)
 
+Observer blocks of an attribute are indexed by `[observer, pattern]`,
+where  observer refers to the "self" of the block, and pattern is the
+argument to `when_var(pattern)`. So as long as this pair differs, you can
+register a different block.
+
+So the following registers three blocks:
+
+    a = AAA.new
+
+    x = []
+    x.instance_eval do
+      a.when_name(/foo/) { } # pair is [x, /foo/]
+      a.when_name(/bar/) { } # pair is [x, /bar/]
+    end
+
+    when_name(/foo/) {...}   # pair is [<toplevel object>, /bar/]
+
 Note that `observable` can handle arbitrary cycles of observers. See the
-`CycleExample` in examples/examples.rb`.
+`CycleExample` in `examples/examples.rb`.
 
 The order in which action clauses happen is not specified.
 
